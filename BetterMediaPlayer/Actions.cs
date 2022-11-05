@@ -73,30 +73,35 @@ namespace BetterMediaPlayer
            return (int) defaultPlaybackDevice.Volume;
         }
 
-        public void Pause()
+        public async void SwichPlay(int sessionid)
         {
+            await gsmtcsm.GetSessions()[sessionid].TryTogglePlayPauseAsync();
+        }
 
+        public async void Previous(int sessionid)
+        {
+            await gsmtcsm.GetSessions()[sessionid].TrySkipPreviousAsync();
         }
 
         
 
-        public void Next()
+        public async void Next(int sessionid)
         {
-
+           await gsmtcsm.GetSessions()[sessionid].TrySkipNextAsync();
+           
         }
 
 
 
 
-        [DllImport("user32.dll")]
-        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+        //[DllImport("user32.dll")]
+        //static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
+        public IReadOnlyList<GlobalSystemMediaTransportControlsSession> GetAllSessions() => gsmtcsm.GetSessions();
 
-        private static async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() =>
-             await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
+        public async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() =>   await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
 
-        private static async Task<GlobalSystemMediaTransportControlsSessionMediaProperties> GetMediaProperties(GlobalSystemMediaTransportControlsSession session) =>
-            await session.TryGetMediaPropertiesAsync();
+        public async Task<GlobalSystemMediaTransportControlsSessionMediaProperties> GetMediaProperties(GlobalSystemMediaTransportControlsSession session) =>  await session.TryGetMediaPropertiesAsync();
 
     }
 }
