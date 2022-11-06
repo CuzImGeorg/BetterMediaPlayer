@@ -14,6 +14,8 @@ namespace BetterMediaPlayer
         public static Actions actions { get; private set; }
         public static Hotkeys hotkeys { get; private set; }
 
+        public static MediaPlayer mediaPlayer { get; private set; }
+
 
         #pragma warning restore CS8618
 
@@ -37,7 +39,7 @@ namespace BetterMediaPlayer
             }
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new MediaPlayer());
+            Application.Run(mediaPlayer = new MediaPlayer());
 
 
         }

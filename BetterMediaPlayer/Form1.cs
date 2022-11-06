@@ -6,6 +6,9 @@ namespace BetterMediaPlayer
 {
     public partial class MediaPlayer : Form
     {
+
+        public int sid { get; private set; } = 0;
+
         public MediaPlayer()
         {
             InitializeComponent();
@@ -60,7 +63,7 @@ namespace BetterMediaPlayer
                         trackBar1.Value = Program.actions.GetCurrentVolume();
                         label1.Text = trackBar1.Value.ToString();
                         label1.Location = new Point(34, (int)(125 - trackBar1.Value * 1.25) + 15);
-
+                        
 
                     }));
                     Thread.Sleep(100);
@@ -154,11 +157,27 @@ namespace BetterMediaPlayer
             }
         }
 
+
+        public void SwitchSession()
+        {
+            if(sid +1 < Program.actions.GetAllSessions().Count)
+            {
+                sid++;
+            }else
+            {
+                sid = 0;
+            }
+            Debug.WriteLine(sid.ToString());
+
+        }
+
+        
+
         private void button1_Click(object sender, EventArgs e)
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Next(0);
+                Program.actions.Next();
             })).Start();
 
         }
@@ -167,7 +186,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Next(1);
+                Program.actions.Next();
             })).Start();
 
         }
@@ -176,7 +195,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Next(2);
+                Program.actions.Next();
             })).Start();
 
         }
@@ -186,7 +205,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Previous(0);
+                Program.actions.Previous();
             })).Start();
 
         }
@@ -195,7 +214,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Previous(1);
+                Program.actions.Previous();
             })).Start();
 
         }
@@ -204,7 +223,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.Previous(2);
+                Program.actions.Previous();
             })).Start();
 
         }
@@ -212,7 +231,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay(0);
+                Program.actions.SwichPlay();
             })).Start();
         }
 
@@ -221,7 +240,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay(1);
+                Program.actions.SwichPlay();
             })).Start();
 
         }
@@ -232,7 +251,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay(1);
+                Program.actions.SwichPlay();
             })).Start();
 
         }

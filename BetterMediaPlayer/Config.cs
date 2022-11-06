@@ -22,6 +22,10 @@ namespace BetterMediaPlayer
             KEY_VOLUMEUP = getValue("volup");
             KEY_VOLUMEDOWN = getValue("voldown");
             KEY_MUTE = getValue("mute");
+            KEY_PREV = getValue("prev");
+            KEY_NEXT = getValue("next");
+            KEY_PLAY = getValue("play");
+            KEY_SWITCHSESSION = getValue("swses");
         }
 
 
@@ -63,6 +67,10 @@ namespace BetterMediaPlayer
         public static string KEY_VOLUMEUP { get; set; }
         public static string KEY_VOLUMEDOWN { get; set; }
         public static string KEY_MUTE { get; set; }
+        public static string KEY_PREV { get; set; }
+        public static string KEY_NEXT { get; set; }
+        public static string KEY_PLAY { get; set; }
+        public static string KEY_SWITCHSESSION { get; set; }
 
     }
 }

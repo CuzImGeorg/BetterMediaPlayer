@@ -73,22 +73,27 @@ namespace BetterMediaPlayer
            return (int) defaultPlaybackDevice.Volume;
         }
 
-        public async void SwichPlay(int sessionid)
+
+        public async void SwichPlay()
         {
-            await gsmtcsm.GetSessions()[sessionid].TryTogglePlayPauseAsync();
+            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TryTogglePlayPauseAsync();
         }
 
-        public async void Previous(int sessionid)
+        public async void Previous()
         {
-            await gsmtcsm.GetSessions()[sessionid].TrySkipPreviousAsync();
+            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipPreviousAsync();
         }
 
-        
 
-        public async void Next(int sessionid)
+        public async void Next()
         {
-           await gsmtcsm.GetSessions()[sessionid].TrySkipNextAsync();
-           
+            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipNextAsync();
+
+        }
+
+        public void NextSession()
+        {
+            Program.mediaPlayer.SwitchSession();
         }
 
 
