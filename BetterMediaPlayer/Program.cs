@@ -32,12 +32,7 @@ namespace BetterMediaPlayer
             Config.init();
             actions = new();
             hotkeys = new Hotkeys();
-            foreach (var s in actions.GetAllSessions())
-            {
-                var mediaProperties = await actions.GetMediaProperties(s);
-                Debug.WriteLine("{0} - {1}", mediaProperties.Artist, mediaProperties.Title);
-            }
-
+     
             ApplicationConfiguration.Initialize();
             Application.Run(mediaPlayer = new MediaPlayer());
 

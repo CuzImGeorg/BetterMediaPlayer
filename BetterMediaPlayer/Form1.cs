@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms.Design;
 using Windows.Networking.Sockets;
@@ -11,9 +12,20 @@ namespace BetterMediaPlayer
 
         public MediaPlayer()
         {
+     
             InitializeComponent();
             UpdateVolume();
             this.label1.Location = new Point(34, (int)(125 - trackBar1.Value * 1.25) + 15);
+            this.Location = new Point(-508, 20);
+            this.Location = new Point(Screen.FromControl(this).Bounds.Width - 508, 0);
+            //TODO set location config 
+            
+
+
+
+
+            fillDics();
+            richTextBox1.ForeColor = Color.Red;
             loadSeesions();
             updateSessions();
         }
@@ -46,6 +58,7 @@ namespace BetterMediaPlayer
 
 
         }
+
 
         public void UpdateVolume()
         {
@@ -110,53 +123,90 @@ namespace BetterMediaPlayer
 
         public  async void loadSeesions()
         {
-            richTextBox1.Visible = false;
-            richTextBox2.Visible = false;
-            richTextBox3.Visible = false;
-            button1.Visible = false;
-            button2.Visible = false;
-            button3.Visible = false;
-            button4.Visible = false;
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = false;
-            button8.Visible = false;
-            button9.Visible = false;
-
+  
 
             var sessions = Program.actions.GetAllSessions();
-            if (sessions.Count >= 1)
+            try
             {
-                var info = await Program.actions.GetMediaProperties(sessions[0]);
-                richTextBox1.Visible = true;
-                button1.Visible = true;
-                button4.Visible = true;
-                button7.Visible = true;
+                if (sessions.Count >= 1)
+                {
+                    var info = await Program.actions.GetMediaProperties(sessions[0]);
+                    richTextBox1.Visible = true;
+                    button1.Visible = true;
+                    button4.Visible = true;
+                    button7.Visible = true;
 
-                richTextBox1.Text = info.Title + " - " + info.Artist;
-                
-            }
-            if (sessions.Count >= 2)
-            {
-                var info = await Program.actions.GetMediaProperties(sessions[1]);
-                richTextBox2.Visible = true;
-                richTextBox2.Text = info.Title + " - " + info.Artist;
-                button2.Visible = true;
-                button5.Visible = true;
-                button8.Visible = true;
+                    richTextBox1.Text = info.Title + " - " + info.Artist;
 
-            }
-            if (sessions.Count >= 3)
+                }
+                else
+                {
+                    richTextBox1.Visible = false;
+                    button1.Visible = false;
+                    button4.Visible = false;
+                    button7.Visible = false;
+                }
+                if (sessions.Count >= 2)
+                {
+                    var info = await Program.actions.GetMediaProperties(sessions[1]);
+                    richTextBox2.Visible = true;
+                    richTextBox2.Text = info.Title + " - " + info.Artist;
+                    button2.Visible = true;
+                    button5.Visible = true;
+                    button8.Visible = true;
+
+                }
+                else
+                {
+                    richTextBox2.Visible = false;
+                    button2.Visible = false;
+                    button5.Visible = false;
+                    button8.Visible = false;
+
+                }
+                if (sessions.Count >= 3)
+                {
+                    var info = await Program.actions.GetMediaProperties(sessions[2]);
+                    richTextBox3.Visible = true;
+                    button3.Visible = true;
+                    button6.Visible = true;
+                    button9.Visible = true;
+                    richTextBox3.Text = info.Title + " - " + info.Artist;
+                }
+                else
+                {
+                    richTextBox3.Visible = false;
+                    button3.Visible = false;
+                    button6.Visible = false;
+                    button9.Visible = false;
+                }
+            } catch(Exception)
             {
-                var info = await Program.actions.GetMediaProperties(sessions[2]);
-                richTextBox3.Visible = true;
-                button3.Visible = true;
-                button6.Visible = true;
-                button9.Visible = true;
-                richTextBox3.Text = info.Title + " - " + info.Artist;
+
             }
         }
 
+        private Dictionary<RichTextBox, int> DirectoryRTBSID = new();
+        private Dictionary<Button, int> DiectoryBTSID = new();
+
+
+        private void fillDics()
+        {
+            DirectoryRTBSID.Add(richTextBox1,0);
+            DirectoryRTBSID.Add(richTextBox2,1);
+            DirectoryRTBSID.Add(richTextBox3,2);
+            DiectoryBTSID.Add(button1,0);
+            DiectoryBTSID.Add(button4,0);
+            DiectoryBTSID.Add(button7,0);
+            DiectoryBTSID.Add(button2,1);
+            DiectoryBTSID.Add(button5,1);
+            DiectoryBTSID.Add(button8,1);
+            DiectoryBTSID.Add(button3,2);
+            DiectoryBTSID.Add(button6,2);
+            DiectoryBTSID.Add(button9,2);
+
+
+        }
 
         public void SwitchSession()
         {
@@ -167,7 +217,23 @@ namespace BetterMediaPlayer
             {
                 sid = 0;
             }
-            Debug.WriteLine(sid.ToString());
+
+            this.Invoke(()=>
+            {
+                foreach (RichTextBox r in DirectoryRTBSID.Keys)
+                {
+                    r.ForeColor = Color.White;
+                }
+                foreach (var v in DirectoryRTBSID)
+                {
+                    if (v.Value == sid)
+                    {
+                        v.Key.ForeColor = Color.Red;
+                    }
+
+                }
+
+            });
 
         }
 
@@ -231,7 +297,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay();
+                Program.actions.SwichPlay(0);
             })).Start();
         }
 
@@ -240,7 +306,7 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay();
+                Program.actions.SwichPlay(1);
             })).Start();
 
         }
@@ -251,9 +317,14 @@ namespace BetterMediaPlayer
         {
             new Thread(new ThreadStart(() =>
             {
-                Program.actions.SwichPlay();
+                Program.actions.SwichPlay(2);
             })).Start();
 
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

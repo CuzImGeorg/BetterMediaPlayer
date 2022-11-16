@@ -74,21 +74,92 @@ namespace BetterMediaPlayer
         }
 
 
+        private bool cd1 = false;
+        private bool cd2 = false;
+
+
         public async void SwichPlay()
         {
-            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TryTogglePlayPauseAsync();
+            if(!cd1)
+            {
+                await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TryTogglePlayPauseAsync();
+                cd1 = true;
+                #pragma warning disable CS4014 
+                Task.Run(()=>
+                {
+
+
+                   Thread.Sleep(250);
+                    cd1 = false;
+                });
+                #pragma warning restore CS4014 
+            }
+
+            
+
         }
+
+
+
+
+        public async void SwichPlay(int id)
+        {
+            if (!cd2)
+            {
+                await gsmtcsm.GetSessions()[id].TryTogglePlayPauseAsync();
+                cd2 = true;
+                #pragma warning disable CS4014
+                Task.Run(() =>
+                {
+
+
+                    Thread.Sleep(250);
+                    cd2 = false;
+                });
+                #pragma warning restore CS4014
+            }
+        }
+
+        private bool cd3 = false;
+        private bool cd4 = false;
+
 
         public async void Previous()
         {
-            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipPreviousAsync();
+            if (!cd3)
+            {
+                await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipPreviousAsync();
+                cd3 = true;
+                #pragma warning disable CS4014
+                Task.Run(() =>
+                {
+
+
+                    Thread.Sleep(250);
+                    cd3 = false;
+                });
+                #pragma warning restore CS4014
+            }
         }
+
 
 
         public async void Next()
         {
-            await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipNextAsync();
+            if (!cd4)
+            {
+                await gsmtcsm.GetSessions()[Program.mediaPlayer.sid].TrySkipNextAsync();
+                cd4 = true;
+                #pragma warning disable CS4014
+                Task.Run(() =>
+                {
 
+
+                    Thread.Sleep(250);
+                    cd4 = false;
+                });
+                #pragma warning restore CS4014
+            }
         }
 
         public void NextSession()
