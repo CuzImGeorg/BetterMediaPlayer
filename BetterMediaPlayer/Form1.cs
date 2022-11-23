@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms.Design;
 using Windows.Networking.Sockets;
 
@@ -184,7 +185,15 @@ namespace BetterMediaPlayer
             {
 
             }
-        }
+            if(sid >= sessions.Count)
+            {
+                SwitchSession();
+                if (sid >= sessions.Count)
+                {
+                    SwitchSession();
+                }
+            }
+         }
 
         private Dictionary<RichTextBox, int> DirectoryRTBSID = new();
         private Dictionary<Button, int> DiectoryBTSID = new();
